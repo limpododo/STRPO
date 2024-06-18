@@ -1,0 +1,61 @@
+﻿<Window x:Class="CurrencyConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:viewModels="clr-namespace:CurrencyConverter.ViewModels"
+        xmlns:converters="clr-namespace:CurrencyConverter.Converters"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="Конвертер валют Духанин М.А. ЗИП-23м" Height="400" Width="740">
+    
+    <Window.DataContext>
+        <viewModels:CurrenciesViewModel/>
+    </Window.DataContext>
+    
+    <Window.Resources>
+        <converters:CollapsedValueConverter x:Key="CollapsedValueConverter"/> 
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Visibility="{Binding CurrenciesIsVisible, Converter= {StaticResource CollapsedValueConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="EUR (евро):" FontSize="30" VerticalAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="USD (доллар):" FontSize="30" VerticalAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="2" Content="CNY (юань):" FontSize="30" VerticalAlignment="Center"/>
+        
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding EuroNew}" FontSize="60" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding DollarNew}" FontSize="60" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding YuanNew}" FontSize="60" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10"/>
+        
+            <Button Grid.Column="2" Grid.Row="0" Command="{Binding ChangeCommand}" CommandParameter="EUR" Content="Change" FontSize="14" VerticalAlignment="Stretch" Margin="10"/>
+            <Button Grid.Column="2" Grid.Row="1" Command="{Binding ChangeCommand}" CommandParameter="USD" Content="Change" FontSize="14" VerticalAlignment="Stretch" Margin="10"/>
+            <Button Grid.Column="2" Grid.Row="2" Command="{Binding ChangeCommand}" CommandParameter="CNY" Content="Change" FontSize="14" VerticalAlignment="Stretch" Margin="10"/>
+            
+            <Label Grid.Column="3" Grid.Row="0" Content="{Binding EuroCurrent}" ContentStringFormat="Текущий курс {0}" FontSize="30" VerticalAlignment="Center"/>
+            <Label Grid.Column="3" Grid.Row="1" Content="{Binding DollarCurrent}" ContentStringFormat="Текущий курс {0}" FontSize="30" VerticalAlignment="Center"/>
+            <Label Grid.Column="3" Grid.Row="2" Content="{Binding YuanCurrent}" ContentStringFormat="Текущий курс {0}" FontSize="30" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="0" Visibility="{Binding ChartIsVisible, Converter= {StaticResource CollapsedValueConverter}}">
+            <oxy:PlotView Model="{Binding Chart}"/>
+        </Grid>
+        <Button Grid.Row="1" Content="{Binding ChangeViewButtonString}" Command="{Binding ChangeViewCommand}" FontSize="30"/>
+    </Grid>
+</Window>
